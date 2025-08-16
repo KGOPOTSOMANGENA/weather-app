@@ -64,7 +64,7 @@ export default function useWeather() {
           const temps = items.map((i) => i.main.temp);
           const weather = items[0].weather;
           return {
-            dt: new Date(date).getTime() / 1000,
+            dt: items[0].dt,
             temp: { day: Math.max(...temps), night: Math.min(...temps) },
             weather,
           };
