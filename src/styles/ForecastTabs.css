@@ -1,0 +1,44 @@
+.forecast-tabs {
+  margin-top: 1rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.tabs button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #4e5eeba8;
+  color: white;
+}
+
+.scroll-x {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+}
+
+.forecast-card {
+  background: var(--card-bg, #f2f2f2);
+  padding: 0.5rem;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 80px;
+  color: orange;
+}
+
+.daily {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: rgb(175, 120, 17);
+}
