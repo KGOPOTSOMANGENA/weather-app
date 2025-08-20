@@ -31,33 +31,29 @@ export default function Home() {
       let lon: number;
       let name: string;
 
-      if (selected) {
-        lat = selected.lat;
-        lon = selected.lon;
-        name = selected.name;
-      } else if (navigator.geolocation) {
-        try {
+      try {
+        if (navigator.geolocation) {
           const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
-            navigator.geolocation.getCurrentPosition(resolve, reject)
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              enableHighAccuracy: true,
+              timeout: 10000,
+              maximumAge: 0,
+            })
           );
           lat = pos.coords.latitude;
           lon = pos.coords.longitude;
           name = "Current Location";
-        } catch (err) {
-          console.warn("Geolocation denied or failed:", err);
-          if (saved.length > 0) {
-            const s = saved[0];
-            lat = s.lat;
-            lon = s.lon;
-            name = s.name;
-          } else {
-            lat = defaultCoords.lat;
-            lon = defaultCoords.lon;
-            name = defaultCoords.name;
-          }
+        } else {
+          throw new Error("Geolocation not available");
         }
-      } else {
-        if (saved.length > 0) {
+      } catch (err) {
+        console.warn("Geolocation denied or failed:", err);
+
+        if (selected) {
+          lat = selected.lat;
+          lon = selected.lon;
+          name = selected.name;
+        } else if (saved.length > 0) {
           const s = saved[0];
           lat = s.lat;
           lon = s.lon;
@@ -71,6 +67,7 @@ export default function Home() {
 
       const cache = tryLoadCache(lat, lon, unit);
       if (cache) setWeatherData(cache.data);
+
       const fresh = await fetchByCoords(lat, lon, unit);
       if (fresh) setWeatherData(fresh);
 
